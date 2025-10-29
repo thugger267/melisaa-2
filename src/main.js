@@ -105,6 +105,9 @@ async function handleRegister(e) {
 async function handlePatientSubmit(e) {
   e.preventDefault();
 
+  // Refresh current user to ensure we have the latest session
+  currentUser = await getCurrentUser();
+
   if (!currentUser) {
     alert('Please login first');
     window.location.href = '/login.html';
@@ -153,6 +156,7 @@ async function handlePatientSubmit(e) {
     .maybeSingle();
 
   if (error) {
+    console.error('Database error:', error);
     alert('Error saving patient data: ' + error.message);
     submitBtn.textContent = 'Generate Diet Plan';
     submitBtn.disabled = false;
